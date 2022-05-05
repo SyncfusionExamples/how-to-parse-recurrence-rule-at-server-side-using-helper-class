@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+    Recurrence Editor
+</div>
+<div>
+    <ejs-recurrenceeditor id="RecurrenceEditor" change="onChange"> </ejs-recurrenceeditor>
+</div>
+<div style="height:25px"></div>
+<div>
+    Date Collection
+</div>
+<div>
+    <div id="Collection"></div>
+</div>
+
+<script type="text/javascript">
+    function onChange(args) {
+        var recurrenceObj = document.getElementById("RecurrenceEditor").ej2_instances[0];
+        var dates = recurrenceObj.getRecurrenceDates(new Date(), args.value); // Here the first argument should be the start date and second argument is the recurrcen rule
+        $.ajax({
+            url: '@Url.Action("getDates", "Home")',
+            data: { 'dates': JSON.stringify(args.value)},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                $("#Collection").html("");
+                var object = [];
+                for (var i = 0; i < result.length; i++) {
+                    $("#Collection").append('<div id="date_' + i + '">' + result[i] + '</div>');
+                }
+            }
+        });
+     }
+
+</script>
