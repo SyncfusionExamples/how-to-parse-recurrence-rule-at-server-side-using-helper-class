@@ -679,6 +679,7 @@ namespace CoreWebApp
                         else if (UNTIL != null)
                         {
                             bool IsUntilDateReached = false;
+                            DateTime prevDate = new DateTime();
                             while (!IsUntilDateReached)
                             {
                                 var weekCount = MondaysInMonth(addDate);
@@ -730,10 +731,15 @@ namespace CoreWebApp
                                 {
                                     addDate = weekStartDate.AddDays((nthWeek) * 7);
                                     addDate = addDate.AddDays(nthweekDay);
+                                    if (addDate.CompareTo(prevDate) < 0)
+                                    {
+                                        addDate = prevDate;
+                                    }
                                 }
                                 if (addDate.CompareTo(startDate.Date) < 0)
                                 {
                                     addDate = addDate.AddYears(1);
+                                    prevDate = addDate;
                                     continue;
                                 }
                                 if (DateTime.Compare(addDate.Date, Convert.ToDateTime(UNTIL)) <= 0)
